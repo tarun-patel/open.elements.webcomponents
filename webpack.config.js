@@ -1,3 +1,6 @@
+
+const MiniCssExtractPlugin=require("mini-css-extract-plugin");
+
 let mode="development";
 let target="web";
 if(process.env.NODE_ENV="production"){
@@ -11,9 +14,36 @@ module.exports={
  module:{
    
      rules:[
+      {
+        test: /\.html$/i,
+        loader: 'html-loader',
+      },  {
+         test:/\.(png|jpeg|gif|svg)$/i,
+         type:"asset/resource",
+        },
         {
+            test: /\.styles.scss$/,
+            exclude: /node_modules/,
+            use: [
+              "sass-to-string",
+              {
+                loader: "sass-loader",
+                options: {
+                  sassOptions: {
+                    outputStyle: "compressed",
+                  },
+                },
+              },
+            ],
+          },
+        {
+            test:/\.(s[ac]|c)ss$/i,
+            exclude: [/\.styles.scss$/, /node_modules/],
+            use:[MiniCssExtractPlugin.loader,"css-loader","postcss-loader","sass-loader"]
+          }
+            ,{
             test:/\.[jt]s$/,
-            exclude:/node_modules/,
+            include:[/node_modules\/open.elements.data.ts/, /src/],
             use:{
                 loader:"babel-loader",
             }
@@ -25,7 +55,7 @@ module.exports={
   maxEntrypointSize: 512000,
   maxAssetSize: 512000
 },
- plugins:[],
+ plugins:[ new MiniCssExtractPlugin()],
    resolve: {
     extensions: ['.js', '.ts'],
   },
