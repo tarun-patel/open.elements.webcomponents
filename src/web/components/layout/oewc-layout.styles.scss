@@ -1,0 +1,85 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined");
+.layout{
+  // background-color: yellow;
+  width:auto;
+  height: auto;
+  display: grid;
+  grid-gap: 0.35rem;
+  grid-template-areas:
+   "header"
+   "sidebar"
+   "content"
+   "sidebar2"
+   "footer"
+}
+
+
+
+// @media only screen and (min-width: 500px)  {
+//   .layout {
+
+//     grid-template-columns: 20% auto;
+//     grid-template-areas:
+//     "header   header"
+//     "sidebar  content"
+//     "sidebar2 sidebar2"
+//     "footer   footer";
+//   }
+//   }
+
+  @media only screen and (min-width: 600px)   {
+    .layout {
+      grid-gap: .35rem;
+      grid-template-columns:max-content auto max-content;
+      grid-template-areas:
+      "header  header header "
+      "sidebar content sidebar2 "
+      "footer  footer footer ";
+      // max-width: 600px;
+    }
+  }
+
+.layout-leftbar {
+  grid-area: sidebar;
+  width: max-content;
+  // border: 1px solid rebeccapurple;
+}
+
+.layout-rightbar {
+  grid-area: sidebar2;
+}
+
+.layout-main {
+  grid-area: content;
+}
+
+.layout-header {
+  grid-area: header;
+}
+
+.layout-footer {
+  grid-area: footer;
+}
+
+.box {
+  background-color: #444;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 150%; 
+}
+
+.layout-header,
+.layout-footer {
+  background-color: #999;
+}
+.layout-main{
+  // border: 1px solid blueviolet;
+  // background-color: #f1f1f1;
+  
+}
+.layout-rightbar {
+  background-color: #ccc;
+  color: #444;
+}

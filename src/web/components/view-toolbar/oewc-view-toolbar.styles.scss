@@ -1,0 +1,30 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined");
+.toolbar{
+  margin: 0.15rem;
+  padding: 0.5rem;
+  background-color:#E2E4E9;
+  border-radius: .5rem;
+  nav{
+    display: inline-block;
+
+    li  {
+      display: inline-block;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      a{
+        text-decoration: none;
+        font-size:small;
+        color: #133467;
+      }
+
+  }
+  }
+
+  li + li:before {
+    content: "";
+    border-left: .015rem black solid;
+    padding-left: 1rem;
+}
+
+}
