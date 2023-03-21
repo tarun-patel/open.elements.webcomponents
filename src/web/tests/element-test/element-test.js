@@ -1,7 +1,7 @@
 
 import { Item } from 'open.elements.data.ts';
-import { SelectMulOptions } from '../select_tags/select.tag';
-
+import { SelectMulOptions } from '../../components/select_tags/select.tag';
+ 
 export class  ElementTest extends HTMLElement{
     constructor(){
         super();

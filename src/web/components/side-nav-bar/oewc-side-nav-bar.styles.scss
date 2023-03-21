@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined");
+.nav-bar-container{
+  background-color: #f1f1f1;
+  border-radius: 0.15rem;
+  // margin: 1em;
+  padding: 0.25rem;
+  font-size: small;
+  nav{
+    padding:.5rem;
+  }
+  a{
+    text-decoration: none;
+    
+
+  }
+  a:hover{
+    text-decoration: underline;
+  }
+ a{ .a-clicked{
+    border-left: 2rem;
+    border-color: blue;
+  }
+}
+}

@@ -1,10 +1,12 @@
 import html from './toggle.switch.html';
 import styles from './toggle.switch.styles.scss';
 
-export class MultiSelectCheckbox extends HTMLElement {
-    constructor(){
+export class ToggleSwitch extends HTMLElement {
+     metadataItem;
+    constructor(item){
         super();
         this.attachShadow({mode:'open'})
+        this.metadataItem=item;
     }
     connectedCallback(){
         this.shadowRoot.innerHTML=` <style>${styles}</style> ${html} `
@@ -17,6 +19,7 @@ export class MultiSelectCheckbox extends HTMLElement {
         let input=document.createElement('input');
         input.type='checkbox';
         input.classList.add('switch-checkbox');
+        input.checked=this.metadataItem.fieldValue;
         let span=document.createElement('span');
         span.classList.add('switch-roller');
 
@@ -30,6 +33,6 @@ export class MultiSelectCheckbox extends HTMLElement {
   
     }
 }
-customElements.define('toggle-switch',MultiSelectCheckbox);
+customElements.define('toggle-switch',ToggleSwitch);
 
-//  export default MultiSelectCheckbox;
+//  export default ToggleSwitch;

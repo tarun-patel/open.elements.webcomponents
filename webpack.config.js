@@ -5,7 +5,7 @@ let mode="development";
 let target="web";
 if(process.env.NODE_ENV="production"){
     mode=process.env.NODE_ENV;
-    tareget="browserslist";
+    // target="browserslist";
 }
 
 module.exports={
@@ -43,7 +43,7 @@ module.exports={
           }
             ,{
             test:/\.[jt]s$/,
-            include:[/node_modules\/open.elements.data.ts/, /src/],
+            include:[/src/],
             use:{
                 loader:"babel-loader",
             }
