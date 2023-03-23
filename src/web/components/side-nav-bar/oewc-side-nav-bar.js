@@ -33,7 +33,7 @@ export class SideNavBar extends HTMLElement {
     let  nav=document.createElement("nav");
     let a=document.createElement("a");
     // a.href=key.fields.get("schemaId").fieldValue;
-    a.textContent=key.fields.get("fileName").fieldValue;
+    a.textContent=key.fields.get(key.fields.get("a-name-field").fieldValue).fieldValue;
     let clickFunction=key.fields.get("click_function").fieldValue;
       console.log("clickFunction is:",clickFunction);
       console.log("clickFunction key is :",key);
