@@ -8,5 +8,5 @@ export { Layout } from './web/components/layout/oewc-layout';
 export { Modal } from './web/components/modal/oewc-modal';
 export { Overlay } from './web/components/overlay/oewc-overlay';
 export {ViewToolBar} from './web/components/view-toolbar/oewc-view-toolbar';
-
 export { pagination } from './web/pagination-webcomp/pagination';
+export {DataTable}from './web/components/data.table/oewc.data.table';

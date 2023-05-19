@@ -19,7 +19,11 @@ export class ToggleSwitch extends HTMLElement {
         let input=document.createElement('input');
         input.type='checkbox';
         input.classList.add('switch-checkbox');
+        if(this.metadataItem!=undefined){
         input.checked=this.metadataItem.fieldValue;
+    }else{
+        input.checked=false;
+    }
         let span=document.createElement('span');
         span.classList.add('switch-roller');
 
