@@ -1,11 +1,10 @@
 
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined");
 .layout{
   // background-color: yellow;
   width:auto;
   height: auto;
   display: grid;
-  grid-gap: 0.35rem;
+  grid-gap: 0.1rem;
   grid-template-areas:
    "header"
    "sidebar"
@@ -30,7 +29,7 @@
 
   @media only screen and (min-width: 600px)   {
     .layout {
-      grid-gap: .35rem;
+      grid-gap: 0.1rem;
       grid-template-columns:max-content auto max-content;
       grid-template-areas:
       "header  header header "

@@ -33,6 +33,7 @@ toolbaritems.forEach(entry=>{
   console.log(entry);
   console.log("entry.fields",entry.fields);
   console.log("entry.fields.get('name').fieldValue",entry.fields.get("name"));
+  if(entry.type="icon"){}else{
   let aitem=document.createElement("a");
   
   let liitem=document.createElement("li");
@@ -41,7 +42,7 @@ toolbaritems.forEach(entry=>{
   aitem.href="";
   liitem.appendChild(aitem);
   navitem.appendChild(liitem);
-
+}
 });
 
 toolbar.appendChild(navitem);

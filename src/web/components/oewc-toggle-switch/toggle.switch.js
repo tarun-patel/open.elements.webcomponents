@@ -18,6 +18,8 @@ export class ToggleSwitch extends HTMLElement {
 
         let input=document.createElement('input');
         input.type='checkbox';
+        input.value=true;
+        input.setAttribute("data-val",true);
         input.classList.add('switch-checkbox');
         if(this.metadataItem!=undefined){
         input.checked=this.metadataItem.fieldValue;

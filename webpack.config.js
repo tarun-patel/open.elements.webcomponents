@@ -22,7 +22,7 @@ module.exports={
          type:"asset/resource",
         },
         {
-            test: /\.styles.scss$/,
+            test: /\.styles.scss/,
             exclude: /node_modules/,
             use: [
               "sass-to-string",

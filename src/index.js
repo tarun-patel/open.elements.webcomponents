@@ -1,3 +1,4 @@
+export { PageLoader } from './web/components/page-loader/page-loader';
 
 export { SideNavBar } from './web/components/side-nav-bar/oewc-side-nav-bar';
  export { SelectMulOptions } from './web/components/select_tags/select.tag';
@@ -8,5 +9,6 @@ export { Layout } from './web/components/layout/oewc-layout';
 export { Modal } from './web/components/modal/oewc-modal';
 export { Overlay } from './web/components/overlay/oewc-overlay';
 export {ViewToolBar} from './web/components/view-toolbar/oewc-view-toolbar';
-export { pagination } from './web/pagination-webcomp/pagination';
+export { Pagination } from './web/components/pagination/pagination';
 export {DataTable}from './web/components/data.table/oewc.data.table';
+export {MapRoTable} from './web/components/oewc-map-ro-table/mao.ro.table';

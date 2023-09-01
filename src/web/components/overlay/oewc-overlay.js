@@ -11,7 +11,7 @@ export class Overlay extends HTMLElement {
     super();
     this.metadataItem = item;
     this.shadow = this.attachShadow({ mode: 'open' });
-    console.log("THIS METAATA ITEM IN SIDEBAR");
+    console.log("THIS METAATA ITEM IN OVERLAY ITEM");
     console.log(this.metadataItem);
   }
   connectedCallback() {
