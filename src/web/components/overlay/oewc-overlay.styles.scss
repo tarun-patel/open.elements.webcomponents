@@ -15,7 +15,16 @@ body {
   position: relative;
   min-height: 100vh;
 }
-
+dialog{
+  border: none;
+}
+oewc-modal{
+    
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .modal {
   display: flex;
   flex-direction: column;
