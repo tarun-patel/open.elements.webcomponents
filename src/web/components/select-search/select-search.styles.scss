@@ -1,0 +1,134 @@
+.outer_container {
+  width: fit-content;
+  max-width: 20rem;
+}
+.selected_input_bar {
+  height: 1.6rem;
+  gap: 0.5rem;
+
+  display: flex;
+  width: 100%;
+  align-items: center;
+  position: relative;
+  padding: 0.2rem 0.5rem;
+  border: 0.125rem solid #e9e9eb;
+  background-color: white;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  input {
+    font-weight: 500;
+    line-height: 1rem;
+    letter-spacing: 0.01em;
+    text-align: left;
+    height: 100%;
+    width: 100%;
+    border: 0 !important;
+    outline: 0 !important;
+    cursor: pointer;
+  }
+  input::placeholder {
+    user-select: none;
+  }
+  span {
+    cursor: pointer;
+    color: gray;
+    font-weight: 800;
+    line-height: 0.5;
+    user-select: none;
+  }
+}
+.options_container {
+  display: none;
+  width: 100%;
+  background-color: #fff;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border-radius: 0.3rem;
+  border: 0.125rem solid #e9e9eb;
+
+  .search_bar_container {
+    border: 2px solid #e9e9eb;
+    border-radius: 0.3rem;
+    position: relative;
+    /* vertical-align: middle; */
+    display: flex;
+    align-items: center;
+    width: 98%;
+    gap: 0.75rem;
+    span {
+      color: grey;
+      font-size: 1.25rem;
+      margin-left: 0.5rem;
+    }
+    input {
+      height: 2rem;
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 0.8rem;
+    }
+  }
+  .options_list {
+    margin: 0;
+    padding: 0;
+    padding-top: 0.5rem;
+    margin-top: 0.25rem;
+    overflow-y: auto;
+    max-height: 15rem;
+    li {
+      font-weight: 500;
+      line-height: 1rem;
+      letter-spacing: 0.01em;
+      text-align: left;
+      padding: 0.15rem;
+      //   padding-bottom: 0;
+      list-style: none;
+      font-size: 0.8rem;
+      color: black;
+      cursor: pointer;
+    }
+    // li:hover {
+    //   background-color: #f2f2f2;
+    // }
+  }
+}
+// .selected_input_bar::after {
+//   content: "";
+//   position: absolute;
+//   right: 1rem;
+//   top: 50%;
+//   border-top: 0.55rem solid grey;
+//   border-right: 0.5rem solid transparent;
+//   border-left: 0.5rem solid transparent;
+// }
+
+.show {
+  display: block;
+}
+.hide {
+  display: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+  height: 0.68rem;
+  width: 0.68rem;
+  background-color: #fafafa;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  // box-shadow: inset 0 0 5px rgb(255, 255, 255);
+  border-radius: 0.34rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #141414;
+  border-radius: 0.34rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #363636;
+}

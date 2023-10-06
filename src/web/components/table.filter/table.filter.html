@@ -1,0 +1,39 @@
+<div class="table-filter-base">   
+<!-- <nav><button class="screen-close">x</button></nav> -->
+    <h2>Custom Filtering</h2>
+
+<div class="filters-list">
+    <table cellspacing="0">
+        <thead>
+            <tr>
+                <th>Product Attribute</th>
+                <th>Condition </th>
+                <th>Filter Value  </th>    
+                <th>Filter Range</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+            <tr >
+                <!-- <button class="cancel-filter">Cancel</button> -->
+              <td colspan="5"> <button class="add-more-filter">Add More Filter</button><button class="clear-all-filters">Clear All Filters</button><button class="apply-filter">Apply Filter</button><button class="screen-close">Close</button></td>
+            </tr>
+            </tfoot>
+    </table>
+</div>
+</div>
+<template id="filter-attribute-row-template">
+    <tr id="tablerow" class="attribute-rows">
+        <!-- <form> -->
+            <td><select name="fieldattr" id=""></select></td>
+        <td><select name="condition" id=""></select></td>
+        <td><input name="firstvalue" type="number"></input></td>
+        <td><input name="secondvalue" type="number"></input></td>
+        <td class="removeattributefilter"  >
+            <span class="material-symbols-outlined">delete</span>
+        </td>
+    <!-- </form> -->
+</tr>
+  </template>
+  
