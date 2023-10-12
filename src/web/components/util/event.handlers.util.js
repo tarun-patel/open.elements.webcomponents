@@ -1,8 +1,9 @@
 import { Item, ItemData } from "open.elements.data.ts";
-import { EpConfig } from "../../npm-modules/caas-store-adapter/firestore-adapter/config/epconfig";
-import { ItemService } from "../../npm-modules/caas-store-adapter/firestore-adapter/item.service";
 import { getButton } from "./elements.builder.util";
-import { Modal, Overlay, ToggleSwitch } from "open.elements.web.components";
+import { Modal } from "../modal/oewc-modal";
+import { Overlay } from "../overlay/oewc-overlay";
+import { ToggleSwitch } from "../oewc-toggle-switch/toggle.switch";
+
 // import { CaasItem } from "../../npm-modules/caas-data/caasitem";
 // import { SerdeService } from "../services/serde.service";
 
@@ -27,7 +28,7 @@ const relaod = () => {
   //  console.log("after location ::: reload:");
 };
 
-const handleItemUpdate = (secc, event, formItem, collection) => {
+const handleItemUpdate = (secc, event, formItem, collection,dataFunctions) => {
   let row = event.target.closest("tr");
   //console.log("handle update : eventtarget is", event.target);
  // console.log("handle update : eventtarget.row is", row);
@@ -78,18 +79,18 @@ const handleItemUpdate = (secc, event, formItem, collection) => {
   // let caasItem=new CaasItem();
   // let cci=caasItem.clone(formItem);
   // console.log("let cloned data is:",cci);
-  const itemservice = new ItemService();
-  itemservice.update(secc, "records", collection, formItem);
+  // const itemservice = new ItemService();
+  dataFunctions.update(secc, "records", collection, formItem);
 };
 
-const handleItemDelete = (secc, event, formItem, collection) => {
+const handleItemDelete = (secc, event, formItem, collection,dataFunctions) => {
   let row = event.target.parentNode.parentNode.parentNode;
   // console.debug("FORMITEM On handE ITEM ON DELETE IS:");
   // console.debug(formItem);
   let prnt = row.getAttribute("prnt");
   // if(prnt!=undefined)
-  const itemservice = new ItemService();
-  itemservice
+  // const itemservice = new ItemService();
+  dataFunctions
     .delete(secc, "records", collection, formItem.id, prnt)
     .then((response) => {
       // console.debug("response from itemservice .delete is:");
@@ -118,15 +119,15 @@ const enableInputEditHandler = (event) => {
 
 const handleChildItemAdd = (event, collection, parentId) => {};
 
-const handleFileUpload = (event, id, errorHandler, parent, ol, secc) => {
+const handleFileUpload = (event, id, errorHandler, parent, ol, secc,dataFunctions) => {
   // console.debug("handling file upload for ID:",id,"event is",event);
   let file = event.target.files[0];
   let formData = new FormData();
 
   // formData.append("file", file);
   formData.append("file", file);
-  let itemservice = new ItemService();
-  itemservice.uploadFile(secc, "product", id, formData).catch((error) => {
+  // let itemservice = new ItemService(); 
+  dataFunctions.uploadFile(secc, "product", id, formData).catch((error) => {
     // console.log("ERROR HANDLING FOR UPLoAD FILE IN for id:",id,file.name);
     // console.log("parent is:",parent);
     parent.shadowRoot.appendChild(ol);
@@ -134,8 +135,8 @@ const handleFileUpload = (event, id, errorHandler, parent, ol, secc) => {
   });
 };
 
-const handleClearFilters = (event, collection, filterdatacallback) => {
-  const itemservice = new ItemService();
+const handleClearFilters = (event, collection, filterdatacallback,configServices) => {
+  // const itemservice = new ItemService();
   let formItem = new Item();
   let row = event.target.parentNode.parentNode.parentNode;
   // console.log("event.target:parentNode",event.target.parentNode);
@@ -167,8 +168,8 @@ const handleClearFilters = (event, collection, filterdatacallback) => {
     formItem.parentId = rowParent;
     formItem.addData("parentId", new ItemData("parentId", rowParent));
   }
-  let epco = new EpConfig();
-  formItem.type = epco.getCollectionElementType(collection);
+  // let epco= new EpConfig();
+  formItem.type = configServices.getCollectionElementType(collection);
   // console.log("filterdatacallback is:",filterdatacallback);
 
   //detect table of filter and clear its data.
@@ -203,8 +204,8 @@ const showSplashScreen = (
   w.appendChild(ol);
 };
 
-const handleItemFilter = (event, collection, filterdatacallback) => {
-  const itemservice = new ItemService();
+const handleItemFilter = (event, collection, filterdatacallback,configServices) => {
+  // const itemservice = new ItemService();
   let formItem = new Item();
   let row = event.target.parentNode.parentNode.parentNode;
   // console.debug("Event target on hanle item add is:");
@@ -243,14 +244,14 @@ const handleItemFilter = (event, collection, filterdatacallback) => {
     formItem.parentId = rowParent;
     formItem.addData("parentId", new ItemData("parentId", rowParent));
   }
-  let epco = new EpConfig();
-  formItem.type = epco.getCollectionElementType(collection);
+  // let epco = new EpConfig();
+  formItem.type = configServices.getCollectionElementType(collection);
   // console.log("filterdatacallback is:",filterdatacallback);
   filterdatacallback(formItem);
   //  event.preventDefault();
 };
-const handleItemAdd = (event, secc, collection, parentId) => {
-  const itemservice = new ItemService();
+const handleItemAdd = (event, secc, collection, parentId,dataFunctions,configServices) => {
+  // const itemservice = new ItemService();
   let formItem = new Item();
   let row = event.target.closest("tr"); //.parentNode.parentNode;
   // console.debug("Event target on hanle item add is:");
@@ -290,21 +291,22 @@ const handleItemAdd = (event, secc, collection, parentId) => {
     formItem.parentId = parentId;
     formItem.addData("parentId", new ItemData("parentId", parentId));
   }
-  let epco = new EpConfig();
-  formItem.type = epco.getCollectionElementType(collection);
+  // let epco = new EpConfig();
+  formItem.type = configServices.getCollectionElementType(collection);
   formItem.status = "Draft";
   // console.debug("formitem created to save to db is:");
   // console.debug(formItem);
   // throw "formitem created to save to db is";
   //  console.log("handleItemAdd secc:",secc);
-  itemservice.add(secc, "records", collection, formItem).then((data) => {
+  dataFunctions.add(secc, "records", collection, formItem).then((data) => {
     handleAddRowPostProccessing(
       secc,
       data,
       updateRow,
       row,
       formItem,
-      collection
+      collection,
+      dataFunctions
     );
   });
 };
@@ -314,7 +316,8 @@ const handleAddRowPostProccessing = (
   updateRow,
   row,
   formItem,
-  collection
+  collection,
+  dataFunctions
 ) => {
   // console.debug("data on response to add:");
   // console.debug(data);
@@ -331,7 +334,7 @@ const handleAddRowPostProccessing = (
     "Publish Updates",
     updateRow.id,
     "click",
-    (event) => handleItemUpdate(secc, event, formItem, collection)
+    (event) => handleItemUpdate(secc, event, formItem, collection,dataFunctions)
   );
   // console.debug(updateButton);
   let deleteButton = getButton(
@@ -339,7 +342,7 @@ const handleAddRowPostProccessing = (
     "Remove Record",
     formItem.getId(),
     "click",
-    (event) => handleItemDelete(secc, event, formItem, collection)
+    (event) => handleItemDelete(secc, event, formItem, collection,dataFunctions)
   );
   // console.debug("updateRow===>>>>>>>>");
   // console.debug(updateRow);
@@ -467,13 +470,13 @@ const extractInputs = (fvc) => {
   }
 };
 
-const functionFilterAttributeTypeMapper = (secc) => {
-  let itemService = new ItemService();
+const functionFilterAttributeTypeMapper = (secc,dataFunctions) => {
+  // let itemService = new ItemService();
   let quertItem = new Item();
   quertItem.contextId = "product_attribute_filter_type_conditions_form_schema";
   // console.log("this.shadowRoot is1:",this.shadowRoot);
   return new Promise((resolve, reject) => {
-    itemService
+    dataFunctions
       .getOnContextIdasync(secc, "records", "caas_form_schema", quertItem)
       .then((d) => {
         return resolve(d);

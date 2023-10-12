@@ -4,6 +4,7 @@
   background-color: white;
   border: 1px solid #e9e9eb;
   border-radius: 4px;
+  padding: 0;
   // box-shadow:0px 0px 7px rgb(191, 191, 191, 0.5)
 }
 .page-list {
@@ -19,4 +20,13 @@ ul .links.active {
 .prev:hover,
 .next:hover {
   background-color: #17181a;
+}
+.prev{
+  margin-left: 0.2rem;
+}
+.next{
+  margin-right: 0.2rem;
+}
+ul li{
+  transition: 0.05s ease;
 }

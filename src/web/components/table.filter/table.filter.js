@@ -14,7 +14,7 @@ export class TableFilter extends HTMLElement {
   }
   connectedCallback() {
     let customStyles =
-      this.metadataItem.fields?.get("custom-styles").fieldValue;
+      this.metadataItem.fields?.get("custom-styles")?.fieldValue;
     this.shadow.innerHTML = `  <style>${styles}${customStyles}</style>${html}`;
     this.filterattrBaseMap = new Map();
 
@@ -33,8 +33,9 @@ export class TableFilter extends HTMLElement {
       .getRelElementsOnType("FUNCTIONS")
       .get("table_filter_attr_conditions_function");
 
+      let itmService=this.metadataItem.getRelElementsOnType('SERVICES').get('data_function_services');
     filterattrConditionsFunction(
-      this.metadataItem.getData("secc").fieldValue
+      this.metadataItem.getData("secc").fieldValue,itmService
     ).then((data) => {
       //console.log("table filter attribute conditions data::",);
       this.metadataItem.addRelElementsOnType(

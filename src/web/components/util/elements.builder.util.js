@@ -1,20 +1,20 @@
 import { Item, ItemData } from "open.elements.data.ts";
-import { MapRoTable } from "open.elements.web.components";
-import { ItemService } from "../../npm-modules/caas-store-adapter/firestore-adapter/item.service";
+import { MapRoTable } from "../oewc-map-ro-table/mao.ro.table";
+
+// import { ItemService } from "../../npm-modules/caas-store-adapter/firestore-adapter/item.service";
+
+
 import {
-  enableInputEditHandler,
-  enableInputHandlerOnTabKey,
+
   handleChildItemAdd,
   handleClearFilters,
   handleItemAdd,
   handleItemDelete,
-  handleItemFilter,
   handleItemUpdate,
-  handleRelItemAdd,
 } from "./event.handlers.util";
 import { FormElementsEventHandlersRepo } from "./form.elements.event.handlers.repo";
-import { Pagination } from "open.elements.web.components/src";
-import { TableFilter } from "../components/data.table/table.filter/table.filter";
+import { Pagination } from "../pagination/pagination";
+import { TableFilter } from "../table.filter/table.filter";
 // import { Pagination } from "../components/pagination/pagination";
 
 const getButton = (name, tooltip, id, eventname, buttonClickEventHandler) => {
@@ -71,8 +71,12 @@ const getformElement = (
   field,
   element, //element.getfieldvaluerefid
   elementEventListners,
-  selectValuesMapper
+  selectValuesMapper,
+  dataFunctions
 ) => {
+  //console.log('control inside the getFormElement')
+  //console.log('element event Listner insie the getFormElement',elementEventListners)
+
   console.debug("getformElement secc:", secc);
   console.debug("getformElement element:", element);
   //  console.debug("getformElement trying to create form element for field:",field);
@@ -90,7 +94,9 @@ const getformElement = (
       // console.log("creating the link for file download :inputEle.disabled field is:",inputEle);
     } else {
       // alert("call under else of diabled link ::for field value:")
-      attachEventListeners(inputEle, elementEventListners, secc);
+     // console.log("elementeventListner for button element",elementEventListners);
+
+      attachEventListeners(inputEle, elementEventListners, secc,dataFunctions);
       inputEle.removeAttribute("disabled");
       // console.log("creating the link for file download :inputEle.attachEventListeners field is:",inputEle);
     }
@@ -113,7 +119,9 @@ const getformElement = (
     }
     // console.debug("inputelementeventlisters are: ");
     // console.debug(elementEventListners);
-    attachEventListeners(inputEle, elementEventListners, secc);
+    //console.log("elementeventListner for input text",elementEventListners);
+
+    attachEventListeners(inputEle, elementEventListners, secc,dataFunctions);
     return inputEle;
   } else if (element.fields.get("type").fieldValue == "email") {
     let inputEle = document.createElement("input");
@@ -128,7 +136,9 @@ const getformElement = (
     }
     // console.debug("inputelementeventlisters are: ");
     // console.debug(elementEventListners);
-    attachEventListeners(inputEle, elementEventListners, secc);
+    //console.log("elementeventListner for input email",elementEventListners);
+
+    attachEventListeners(inputEle, elementEventListners, secc,dataFunctions);
     return inputEle;
   } else if (element.fields.get("type").fieldValue == "number") {
     let inputEle = document.createElement("input");
@@ -137,7 +147,9 @@ const getformElement = (
     if (field != undefined) inputEle.value = field.fieldValue;
     // console.debug("inputelementeventlisters are: ");
     // console.debug(elementEventListners);
-    attachEventListeners(inputEle, elementEventListners, secc);
+   // console.log("elementeventListner for input number",elementEventListners);
+
+    attachEventListeners(inputEle, elementEventListners, secc,dataFunctions);
     return inputEle;
   } else if (element.fields.get("type").fieldValue == "radio") {
     let inputEle = document.createElement("input");
@@ -146,7 +158,9 @@ const getformElement = (
     if (field != undefined) inputEle.value = field.fieldValue;
     // console.debug("inputelementeventlisters are: ");
     // console.debug(elementEventListners);
-    attachEventListeners(inputEle, elementEventListners, secc);
+    //console.log("elementeventListner for input radio",elementEventListners);
+
+    attachEventListeners(inputEle, elementEventListners, secc,dataFunctions);
     return inputEle;
   } else if (element.fields.get("type").fieldValue == "checkbox") {
     // let inputEle = new ToggleSwitch(field);
@@ -157,7 +171,9 @@ const getformElement = (
     if (field != undefined) inputEle.checked = field.fieldValue;
     // console.debug("inputelementeventlisters are: ");
     // console.debug(elementEventListners);
-    attachEventListeners(inputEle, elementEventListners, secc);
+    //console.log("elementeventListner for input checkbox",elementEventListners);
+
+    attachEventListeners(inputEle, elementEventListners, secc,dataFunctions);
     return inputEle;
   } else if (element.fields.get("type").fieldValue == "maprotable") {
     // console.log("creating field as MapROTable for field::",field,"for element::",element);
@@ -246,13 +262,17 @@ const getformElement = (
       //  console.log("element",element);
       //console.log("field passed to create select options", field);
 
-      createSelectOptions(secc, selEle, element, field, selectValuesMapper);
+     // console.log('data functions inside the getformElement',dataFunctions)
+      createSelectOptions(secc, selEle, element, field, selectValuesMapper,dataFunctions);
       console.debug("SEL ELEE IS for tWORKIG FOR ELE");
       console.debug(field);
       // console.debug("EVENT HANDLERS FOR SELECT ELE ARE");
       // console.debug(elementEventListners);
       // console.debug();
-      attachEventListeners(selEle, elementEventListners, secc);
+          
+     // console.log("elementeventListner for select element",elementEventListners);
+
+      attachEventListeners(selEle, elementEventListners, secc,dataFunctions);
       // console.debug("field in select value data");
       // console.debug(field);
 
@@ -290,13 +310,13 @@ const getformElement = (
   // return addbtn;
 };
 
-const createSelectOptions = (secc, ele, sele, selfield, selectValuesMapper) => {
+const createSelectOptions = (secc, ele, sele, selfield, selectValuesMapper,dataFunctions) => {
   // console.log("secc in :createSelectOptions",secc);
   //  console.debug("UNDER CREATE SELECT OPTIONS:ele:",ele); //html eleemnt
   //  console.debug("UNDER CREATE SELECT OPTIONS:sele:",sele); // schema representation
   //  console.debug("UNDER CREATE SELECT OPTIONS:selfield:",selfield); // runtime data
   if (sele.fields.get("options_dervation_collection") != undefined) {
-    let itemServie = new ItemService();
+    // let itemServie = new ItemService();
     let colname = sele.fields.get("options_dervation_collection").fieldValue;
     let filterType = sele.fields.get(
       "options_dervation_collection_type"
@@ -379,8 +399,7 @@ const createSelectOptions = (secc, ele, sele, selfield, selectValuesMapper) => {
           } else {
             //  alert("getting valuees fro,m apis:::"+colname+filterType+selfield.parentName+selfield.ref_comp_type+selfield.parentType);
             if(selfield.parentName!=undefined){
-            itemServie
-              .getOnParentOnScope(
+          dataFunctions.getOnParentOnScope(
                 secc,
                 colname,
                 filterType,
@@ -421,7 +440,8 @@ const createSelectOptions = (secc, ele, sele, selfield, selectValuesMapper) => {
                 });
                 //  // console.log("after updating selectvaluesmapperkeys are:",selectValuesMapper);
                 // alert("after working on key for select values:"+colname+filterType+selfield.parentName+selfield.ref_comp_type+selfield.parentType);
-              });}
+              }
+              );}
           }
         } else {
           // console.debug("working on getting data from server for : colname:"+colname+" filterType:"+filterType+" : selfield:",selfield);
@@ -433,8 +453,7 @@ const createSelectOptions = (secc, ele, sele, selfield, selectValuesMapper) => {
           //  throw "selField parent name is undefined:"+JSON.stringify(selfield);
           // }
           if(selfield.parentName!=undefined){
-          itemServie
-            .getOnParent(secc, colname, filterType, selfield.parentName)
+          dataFunctions.getOnParent(secc, colname, filterType, selfield.parentName)
             .then((resp) => {
               // console.debug("REPSONE OF DOMAIN  LIST:getOnParent");
               // console.debug(JSON.stringify(resp));
@@ -459,8 +478,9 @@ const createSelectOptions = (secc, ele, sele, selfield, selectValuesMapper) => {
         // console.debug("UNDER CREATE SELECT OTPIONS::::: selfield is undeifned::: ",selfield);
       }
     } else {
+      //console.log('data functions in element builder :',dataFunctions)
       // console.debug("WITHOUT PARENT DROPDOWN colname and type: "+colname+" fitlertype:"+filterType);
-      itemServie.getOnType(secc, colname, filterType).then((resp) => {
+      dataFunctions.getOnType(secc, colname, filterType).then((resp) => {
         console.debug("REPSONE OF DOMAIN LIST:getOnType");
         console.debug(JSON.stringify(resp)); // console.debug("sele is");
         // console.debug(sele);
@@ -514,7 +534,9 @@ const createSelectOptions = (secc, ele, sele, selfield, selectValuesMapper) => {
   }
 };
 
-const attachEventListeners = (ele, elementEventListners, secc) => {
+const attachEventListeners = (ele, elementEventListners, secc,dataFunctions) => {
+  //console.log('control inside the attach events listner method')
+  //console.log("data functions passing to the attach event listner method is :",dataFunctions)
   if (elementEventListners != undefined) {
     Array.from(elementEventListners).forEach((handler) => {
       //  // console.debug("event listener for inputelement is:");
@@ -522,8 +544,11 @@ const attachEventListeners = (ele, elementEventListners, secc) => {
       // console.log(  "attachEventListeners secc is:",secc);
       // console.log(  "attachEventListeners working on handler is:",handler.handler);
 
-      ele.addEventListener(handler.eventname, (event) =>
-        handler.handler(event, secc)
+      ele.addEventListener(handler.eventname, (event) =>{
+        handler.handler(event, secc,dataFunctions)
+        //console.log('attaching events to the elements '+ele+" and handlerfunction is "+handler.handler);
+
+      }
       );
     });
   }
@@ -544,9 +569,10 @@ const getTableCellElement = (formElement, field, selectValuesMapper) => {
   return cell;
 };
 
-const getAddDataRow = (secc, relEles, ele, collection) => {
+const getAddDataRow = (secc, relEles, ele, collection,dataFunctions,configServices) => {
+//console.log('data function inside getAddDataRow', dataFunctions)
   // console.debug("call in adddatarow: ele is:",ele);
-  let drow = getRow(secc, relEles, ele);
+  let drow = getRow(secc, relEles, ele,null,dataFunctions);
   const actionbcell = document.createElement("td");
   //  let prntid;
   //  if(ele!=undefined && ele.fields!=undfined?.getData("parentId")?.fieldValue)
@@ -556,7 +582,9 @@ const getAddDataRow = (secc, relEles, ele, collection) => {
         event,
         secc,
         collection,
-        ele?.fields?.get("parentId")?.fieldValue
+        ele?.fields?.get("parentId")?.fieldValue,
+        dataFunctions,
+        configServices
       )
     )
   );
@@ -585,7 +613,8 @@ const getFilterDataRow = (
   relEles,
   ele,
   collection,
-  tablefilterdataFunction
+  tablefilterdataFunction,
+  configServices
 ) => {
   // console.debug("call in adddatarow: ele is:",ele);
   //console.log("REL ELES PASSED FROM FILTER DATA ROW :",relEles);
@@ -602,7 +631,7 @@ const getFilterDataRow = (
       "Clear Filter",
       ele.getId(),
       "click",
-      (event) => handleClearFilters(event, collection, tablefilterdataFunction)
+      (event) => handleClearFilters(event, collection, tablefilterdataFunction,configServices)
     )
   );
 
@@ -637,8 +666,8 @@ const renderFilterMenu = (event, collection, tablefilterdataFunction) => {
   //   event.target.parentNode.appendChild(tblFilter);
 };
 
-const getAddChildDataRow = (relEles, ele, collection, parentId) => {
-  let drow = getRow(this.metadata.getData("secc").fieldValue, relEles, ele);
+const getAddChildDataRow = (relEles, ele, collection, parentId,dataFunctions) => {
+  let drow = getRow(this.metadata.getData("secc").fieldValue, relEles, ele,dataFunctions);
   const actionbcell = document.createElement("td");
   actionbcell.appendChild(
     getButton("Add", "Add Record", ele.getId(), "click", (event) =>
@@ -650,17 +679,19 @@ const getAddChildDataRow = (relEles, ele, collection, parentId) => {
   return drow;
 };
 
-const getUpdataRow = (secc, relEles, ele, collection, selectValuesMapper) => {
-  let drow = getRow(secc, relEles, ele, selectValuesMapper);
+const getUpdataRow = (secc, relEles, ele, collection, selectValuesMapper,dataFunctions) => {
+  //console.log('data function inside getUpdateRow', dataFunctions)
+
+  let drow = getRow(secc, relEles, ele, selectValuesMapper,dataFunctions);
   const actionbcell = document.createElement("td");
   actionbcell.appendChild(
     getButton("publish", "Publish Updates", ele.getId(), "click", (event) =>
-      handleItemUpdate(secc, event, ele, collection)
+      handleItemUpdate(secc, event, ele, collection,dataFunctions)
     )
   );
   actionbcell.appendChild(
     getButton("delete", "Remove Record", ele.getId(), "click", (event) =>
-      handleItemDelete(secc, event, ele, collection)
+      handleItemDelete(secc, event, ele, collection,dataFunctions)
     )
   );
 
@@ -675,7 +706,7 @@ const getUpdataRow = (secc, relEles, ele, collection, selectValuesMapper) => {
   return drow;
 };
 
-const getReadonlyRow = (secc, metadataItem, header, ele, collection) => {
+const getReadonlyRow = (secc, metadataItem, header, ele, collection,dataFunctions) => {
   const actionbcell = document.createElement("td");
   // actionbcell.appendChild(getButton("publish","Publish Updates", ele.getId(), "click", (event) => handleItemUpdate(event, ele,collection)));
   // override-action-buttons;
@@ -699,7 +730,7 @@ const getReadonlyRow = (secc, metadataItem, header, ele, collection) => {
           "Remove Record",
           ele.getId(),
           "click",
-          (event) => handleItemDelete(secc, event, ele, col)
+          (event) => handleItemDelete(secc, event, ele, col,dataFunctions)
         );
         actionbcell.appendChild(deleteButton);
       }
@@ -709,17 +740,20 @@ const getReadonlyRow = (secc, metadataItem, header, ele, collection) => {
   //   actionbcell.appendChild(getButton("checkbox","Select Record", ele.getId(), "click", (event) => handleItemDelete(secc,event, ele,collection)));
   // }
   actionbcell.classList.add("row-action");
-  let drow = getRoRow(secc, metadataItem, actionbcell, header, ele);
+ // console.log('data function inside getReadOnly and sending to the getRoRow', dataFunctions)
+
+  let drow = getRoRow(secc, metadataItem, actionbcell, header, ele,dataFunctions);
   if (ele.fields != undefined && ele.fields.get("status") != undefined) {
     drow.setAttribute("data-status", ele.fields.get("status").fieldValue);
   }
   return drow;
 };
 
-const getRoRow = (secc, metadataItem, actionbcell, relEles, ele) => {
+const getRoRow = (secc, metadataItem, actionbcell, relEles, ele,dataFunctions) => {
   let mi = new Item();
   mi = metadataItem;
 
+  //console.log('data functions inside the getRoRow', dataFunctions)
   //ele == database item to work on
   const drow = document.createElement("tr");
   drow.setAttribute("id", ele.getId());
@@ -767,14 +801,20 @@ const getRoRow = (secc, metadataItem, actionbcell, relEles, ele) => {
       let hanlderkey = element.fields.get("element").fieldValue;
       if (element.fields.get("type").fieldValue != undefined) {
         hanlderkey = hanlderkey + "_" + element.fields.get("type").fieldValue;
+       // console.log('handler key in getRoRow is :',hanlderkey)
+
       }
+      //console.log("handler functions :",feehr.getHandlers(hanlderkey))
       //  // console.debug('element.fields.get("element").fieldValue+"_"+element.fields.get("type").fieldValue is:::'+element.fields.get("element").fieldValue+"_"+element.fields.get("type").fieldValue);
+    //  console.log('data funtions inside the formEle1', dataFunctions)
+
       let formEle = getformElement(
         secc,
         field,
         element,
         feehr.getHandlers(hanlderkey),
-        null
+        null,
+        dataFunctions
       );
       if (defaultvalue != undefined) {
         formEle.setAttribute("value", defaultvalue);
@@ -794,9 +834,10 @@ const getRoRow = (secc, metadataItem, actionbcell, relEles, ele) => {
 
   return drow;
 };
-const getRow = (secc, relEles, ele, selectValuesMapper) => {
+const getRow = (secc, relEles, ele, selectValuesMapper,dataFunctions) => {
   // relEless
   //ele == database item to work on
+  //console.log('data function inside the getRow and passsing to formElem2',dataFunctions)
   const drow = document.createElement("tr");
   drow.setAttribute("id", ele.getId());
   // console.debug("Workkimh mo ele");
@@ -848,7 +889,8 @@ const getRow = (secc, relEles, ele, selectValuesMapper) => {
         field,
         element,
         feehr.getHandlers(hanlderkey),
-        selectValuesMapper
+        selectValuesMapper,
+        dataFunctions
       );
       if (defaultvalue != undefined) {
         formEle.setAttribute("value", defaultvalue);

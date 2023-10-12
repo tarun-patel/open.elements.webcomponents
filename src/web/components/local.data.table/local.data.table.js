@@ -9,7 +9,6 @@ import {
   getFilterDataRow,
   getReadonlyRow,
   getUpdataRow,
-  processTableWithHeader,
   processTableWithSearchableHeader,
 } from "../util/elements.builder.util.js";
 import { PageLoader } from "../page-loader/page-loader";
@@ -21,6 +20,8 @@ export class LocalDataTable extends HTMLElement {
   metadataItem;
   page_loader = new PageLoader();
   tableBase;
+  services;
+  configServices;
   constructor(item) {
     super();
     this.metadataItem = item;
@@ -30,9 +31,17 @@ export class LocalDataTable extends HTMLElement {
   }
   connectedCallback() {
     let table_styles = this.metadataItem.fields.get("table-styles")?.fieldValue;
+    let skeletonTableStyles=this.metadataItem.fields.get('skeleton-styles')?.fieldValue;
     this.shadow.innerHTML = `  <style>${styles}${table_styles}${skeletonTableStyles}</style>${html}`;
 
     let fields = this.metadataItem.fields;
+
+    let ItemServ=this.metadataItem.getRelElementsOnType('SERVICES');
+    this.services=ItemServ.get('data_function_services');
+
+    let congifServ=this.metadataItem.getRelElementsOnType('CONFIG');
+    this.configServices=congifServ.get('config_data_func');
+   // console.log('data function passing from local table',this.services);
     if (fields.get("table-styles") != undefined) {
       let mainStyles = fields.get("table-styles").fieldValue;
       this.shadow.innerHTML = `  <style>${styles} ${mainStyles}</style>${html}`;
@@ -102,7 +111,8 @@ export class LocalDataTable extends HTMLElement {
               header,
               new Item(),
               this.metadataItem.fields.get("table_data_collection").fieldValue,
-              this.handleFilterChange
+              this.handleFilterChange,
+              this.configServices
             );
             // console.log("Adding new filtered row:",filterRow);
             let filterMenuItem = new Item();
@@ -128,6 +138,11 @@ export class LocalDataTable extends HTMLElement {
                 ).fieldValue
               )
             );
+            filterMenuItem.addRelElementsOnType(
+              "SERVICES",
+              "data_function_services",
+              this.services
+            ); 
             filterMenuItem.addRelElementsOnType(
               "FUNCTIONS",
               "table_filter_attr_conditions_function",
@@ -213,11 +228,14 @@ export class LocalDataTable extends HTMLElement {
           )
         );
 
+  //      console.log('function services passing before getAddRow call', this.services);
         let addrow = getAddDataRow(
           this.metadataItem.getData("secc").fieldValue,
           header,
           addEle,
-          this.metadataItem.fields.get("table_data_collection").fieldValue
+          this.metadataItem.fields.get("table_data_collection").fieldValue,
+          this.services,
+          this.configServices
         );
         tblBody.appendChild(addrow);
       }
@@ -233,23 +251,28 @@ export class LocalDataTable extends HTMLElement {
           //  console.log("this.metadataItem.fields.get(table_is_editable).fieldValue is:",this.metadataItem.fields.get("table_is_editable").fieldValue);
           // console.log("call under getting update row",this.metadataItem.getData("secc").fieldValue);
           // console.log("call under update row working on element:",ele);
+          //console.log('function services passing before getUpdateRow call ',this.services)
           drow = getUpdataRow(
             this.metadataItem.getData("secc").fieldValue,
             header,
             ele,
             this.metadataItem.fields.get("table_data_collection").fieldValue,
-            this.metadataItem.getData("select_values_mapper").fieldValue
+            this.metadataItem.getData("select_values_mapper").fieldValue,
+            this.services
           );
         } else {
           // console.log("call under getting RO row");
 
           //  console.log("this.metadataItem.fields.get(table_is_editable).fieldValue is:",this.metadataItem.fields.get("table_is_editable").fieldValue);
+         // console.log('function services passing before readOnlyRow call', this.services);
+
           drow = getReadonlyRow(
             this.metadataItem.getData("secc").fieldValue,
             this.metadataItem,
             header,
             ele,
-            this.metadataItem.fields.get("table_data_collection").fieldValue
+            this.metadataItem.fields.get("table_data_collection").fieldValue,
+            this.services
           );
         }
         tblBody.appendChild(drow);
