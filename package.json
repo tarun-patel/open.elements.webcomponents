@@ -1,6 +1,6 @@
 {
   "name": "open.elements.web.components",
-  "version": "1.0.2",
+  "version": "1.1.1",
   "description": "open elements in type script for schema less data exchange",
   "main": "index.js",
   "module": "index.js",
@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "bable-loader": "^0.0.1-security",
-    "open.elements.data.ts": "^1.0.2",
+    "open.elements.data.ts": "^1.0.6",
     "uuid": "^9.0.0"
   },
   "homepage": "https://github.com/zhun-solutions/open.elements.web.components/blob/main/README.md"

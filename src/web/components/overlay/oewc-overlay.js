@@ -11,7 +11,7 @@ export class Overlay extends HTMLElement {
     super();
     this.metadataItem = item;
     this.shadow = this.attachShadow({ mode: 'open' });
-    console.log("THIS METAATA ITEM IN SIDEBAR");
+    console.log("THIS METAATA ITEM IN OVERLAY ITEM");
     console.log(this.metadataItem);
   }
   connectedCallback() {
@@ -31,11 +31,15 @@ export class Overlay extends HTMLElement {
 this.addEventListener("closemodal",event=>{
   console.log("close modal event in overlay:",event);
   console.log("close modal event in overlay:",event.details);
+  let dia=this.shadowRoot.querySelector(".overlay");
+  dia.close();
 })
 }
 console.log("Modal in ovelay is :",modal);
     this.shadow.innerHTML = `  <style>${styles} ${mainStyles}</style>${html}`
-    this.shadowRoot.appendChild(modal);
+    this.shadowRoot.querySelector(".overlay").appendChild(modal);
+    let dia=this.shadowRoot.querySelector(".overlay");
+  dia.showModal();
     let d = new Item();
     d = this.metadataItem;
 

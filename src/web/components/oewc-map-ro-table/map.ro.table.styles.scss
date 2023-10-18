@@ -1,0 +1,87 @@
+table{
+  margin: 3vh;
+  margin-left: 0.25vh;
+  border:none;
+  border-collapse: collapse;
+  font-size: 0.9em;
+  // font-family: sans-serif;
+  font-weight: lighter;
+  min-width: 400px;
+  border-radius: 5px 5px 0 0 ;
+  overflow:hidden;
+  margin: .75rem;
+  border-radius: 0;
+    th {
+    //   font-weight: lighter;
+    input::placeholder{
+        font-size: large;
+    }
+      font-size: large;
+      padding: 1.8rem 1.2rem;
+  }  td {
+    font-weight: lighter;
+    font-size: medium;
+    padding: 1rem .75rem;
+}
+  tbody tr {
+    border-bottom: 1px solid #dddddd;
+    background-color: white;
+    // border-bottom: .02em solid #133467;
+
+}tbody tr:nth-of-type(even) {
+  background-color: #fafafb;
+}
+tbody tr:last-of-type {
+  border-bottom: .1em solid #133467;
+}
+tbody tr.active-row {
+  // font-weight: bold;
+  color: #133467;
+}
+tbody tr td, th  {
+    input {
+      border:none ;
+      background-color: inherit;
+      text-overflow:ellipsis
+    } input:focus {
+      outline: none !important;
+      border:1px solid rgba(12, 1, 33, 0.15);
+      border-radius: .2rem;
+        background-color: inherit;
+    }
+    select{
+      border:none;
+      background-color: inherit;
+      
+      
+    }
+    select:focus {
+      outline: none !important;
+      border:1px solid rgba(12, 1, 33, 0.15);
+      border-radius: .2rem;
+        background-color: inherit;
+    }
+    button{
+       padding : .25em;
+      margin:.25vw;
+      background-color: inherit;
+      color: #133467;
+      border:none;
+      // border-radius: 1rem;
+      font-weight: lighter;
+      // font-weight: bold;
+    }
+}
+    thead  {
+      // background-color: #e5eafe;
+      background-color: white;
+
+      color: #133467;
+       display:table-header-group;
+      text-align: left;   
+       border-bottom: .1em solid #133467;
+
+    }
+ }
+
+ 

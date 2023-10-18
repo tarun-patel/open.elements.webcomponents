@@ -1,0 +1,338 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined");
+
+.table-filter-base {
+  font-family: "Poppins", sans-serif;
+  width: 90%;
+  margin: 0.5rem 0 0 1rem;
+  background-color: #fff;
+  // border: 0.02rem solid #616164;
+  border-radius: 0.3rem;
+  padding: 0.8rem;
+  box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.6);
+  // border-radius: 0.3rem 0.3rem 0 0;
+  // border: 2px solid #e9e9eb;
+  .filters-list {
+    overflow-x: scroll;
+  }
+  h2 {
+    font-family: "Poppins", sans-serif;
+    font-size: 1.25rem;
+    margin: 0.5rem;
+    color: #141414;
+    font-weight: 600;
+  }
+}
+.closed {
+  display: none;
+}
+.table-action-toolbar {
+  font-family: "Poppins", sans-serif;
+  margin-top: -8rem;
+  display: flex;
+  .icon {
+    height: 2rem;
+  }
+  button {
+    border: none;
+    background-color: inherit;
+  }
+}
+.table-base {
+  font-family: "Poppins", sans-serif;
+  margin-left: 2rem;
+  z-index: 100;
+  // border: 2px solid red;
+  width: inherit;
+  overflow-x: auto;
+  height: 32rem;
+
+  overflow-y: auto;
+  margin-top: 7rem;
+  background-color: white;
+}
+table {
+  td {
+    // border:1px solid navy;
+    align-items: center;
+    // content
+  }
+}
+
+table {
+  margin-bottom: 0;
+}
+
+caption,
+th,
+p {
+  font-family: "Poppins", sans-serif;
+  font-size: x-large;
+}
+
+caption {
+  text-align: left;
+  position: absolute;
+  z-index: 99;
+  // margin-top: -68px;
+  // display: table-header-group;
+}
+.table-caption-toolbar {
+  margin-top: 2rem;
+}
+
+.table-caption {
+  margin-top: -9rem;
+  // padding-left: 2rem;
+}
+thead {
+  tr {
+    border-bottom: 1px solid rgb(97, 97, 100);
+    background-color: #f8f9fb;
+    th {
+      padding-left: 1rem;
+      z-index: 3;
+      // background-color: white;
+    }
+  }
+}
+th {
+  // background: rgb(39, 30, 30);
+  position: sticky;
+  top: 0rem;
+}
+.filterrow {
+  // background: rgba(255, 225, 225);
+  position: sticky;
+  top: 2.5rem;
+}
+
+th:first-of-type,
+td:first-of-type,
+.filterrow {
+  left: 0;
+  position: sticky;
+}
+td:first-child,
+th:first-child {
+  border-right: 0.075rem dotted #e9e9eb;
+}
+// td:last-child,
+// th:last-child {
+//   border-right: 2px solid #e9e9eb;
+// }
+
+th:first-of-type,
+.filterrow {
+  z-index: 4;
+}
+
+td:first-of-type {
+  background: white;
+  z-index: 1;
+}
+
+th,
+td p {
+  white-space: nowrap;
+}
+
+td p {
+  margin-top: 0;
+}
+
+td p:last-child {
+  margin-bottom: 0;
+}
+
+th,
+td {
+  padding-left: 1rem;
+  // justify-items: center;
+  // border-right: ;
+  input,
+  select {
+    border: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    // overflow: hidden;
+  }
+  select:focus {
+    border: 1px solid rgba(12, 1, 33, 0.75);
+    border-radius: 0.3rem;
+    background-color: inherit;
+    // outline: none;
+    padding: 0.75rem 0.5rem;
+    margin: 0.5rem;
+  }
+}
+
+.tbl-footer {
+  font-family: "Poppins", sans-serif;
+  height: 3rem;
+  padding-top: 1.5rem;
+  background-color: white;
+  z-index: 3;
+  position: sticky;
+  border-top: 0.01rem solid rgb(3, 7, 42);
+  // background-position-x: center;
+  left: 0;
+  bottom: 0;
+  // color: white;
+  pagination-links {
+    ui {
+      li {
+        color: black;
+      }
+    }
+  }
+}
+
+input {
+  border: 1px solid rgba(12, 1, 33, 0.75);
+  border-radius: 0.3rem;
+  background-color: inherit;
+  outline: none;
+}
+input :focus {
+  border-radius: 0.3rem;
+  background-color: inherit;
+  // outline: none;
+  padding: 0.75rem 0.5rem;
+  margin: 0.5rem;
+}
+table {
+  border: 0.125rem solid #e9e9eb;
+  width: 100%;
+  margin-bottom: 1rem;
+  // border-collapse: collapse;
+  thead,
+  tbody {
+    th {
+      font-weight: 500;
+      font-family: "Poppins", sans-serif;
+      background-color: #fafafa;
+      font-size: 1.25rem;
+      // border-bottom:1px solid rgb(97, 97, 100);
+      border-bottom: 2px solid #e9e9eb;
+      // border-top: 2px solid #e9e9eb;
+
+      input {
+        background-color: #f8f9fb;
+        // background-color: ;
+      }
+    }
+    tr {
+      // display: flex;
+      // justify-content: space-between;
+      //  border-bottom:1px solid rgb(97, 97, 100);
+      border-bottom: 1px solid #e9e9eb;
+
+      td {
+        font-weight: 500;
+        font-family: "Poppins", sans-serif;
+        padding-left: 0;
+        border-bottom: 1px solid #e9e9eb;
+
+        input,
+        select {
+          font-family: "Poppins", sans-serif;
+          border: 1px solid #e9e9eb;
+          border-radius: 0.3rem;
+          // background-color: white;
+        }
+      }
+      input,
+      select {
+        font-family: "Poppins", sans-serif;
+        padding: 0.25rem;
+        margin: 0.5rem;
+      }
+      input::placeholder {
+        font-family: "Poppins", sans-serif;
+        // text-transform: uppercase;
+      }
+    }
+  }
+}
+table thead tr th {
+  font-weight: 600;
+  color: #000;
+  padding: 1rem;
+  margin: 0.5rem;
+  font-size: 0.85rem;
+  // text-transform: uppercase;
+  letter-spacing: 1px;
+  // display: none;
+}
+
+table tbody tr td {
+  // padding: 0.25rem 0;
+}
+table tbody .removeattributefilter {
+  text-align: center;
+  cursor: pointer;
+  span {
+    color: #c5c5c5;
+  }
+}
+.removeattributefilter :hover {
+  color: #b92020;
+}
+
+table tfoot {
+  background-color: #f9f9f9;
+  td:first-of-type {
+    background: #f9f9f9;
+    z-index: 1;
+  }
+}
+table tfoot tr td button {
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
+  letter-spacing: 0.05rem;
+  background-color: #834bff;
+  margin: 0.25rem 1rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #fff;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  height: 2rem;
+}
+
+/* width */
+::-webkit-scrollbar {
+  height: 0.68rem;
+  width: 0.68rem;
+  background-color: #fafafa;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  // box-shadow: inset 0 0 5px rgb(255, 255, 255);
+  border-radius: 0.34rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #141414;
+  border-radius: 0.34rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #363636;
+}
+
+table tbody tr input,
+table tbody tr select {
+  padding: 0.5rem 0.5rem;
+  margin: 0.5rem;
+  color: #151515;
+}
+tbody select {
+  background-color: #f3f3f3;
+  border-radius: 0.2rem;
+}
