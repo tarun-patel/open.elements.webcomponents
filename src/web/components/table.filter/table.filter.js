@@ -33,9 +33,12 @@ export class TableFilter extends HTMLElement {
       .getRelElementsOnType("FUNCTIONS")
       .get("table_filter_attr_conditions_function");
 
-      let itmService=this.metadataItem.getRelElementsOnType('SERVICES').get('data_function_services');
+      let itmService=this.metadataItem
+      .getRelElementsOnType("SERVICES")
+      .get("data_function_services");
     filterattrConditionsFunction(
-      this.metadataItem.getData("secc").fieldValue,itmService
+      this.metadataItem.getData("secc").fieldValue,
+      itmService
     ).then((data) => {
       //console.log("table filter attribute conditions data::",);
       this.metadataItem.addRelElementsOnType(
@@ -115,10 +118,17 @@ export class TableFilter extends HTMLElement {
     //console.log("fieldattrselect is:",fieldattrselect);
     let firstattr = undefined;
     Array.from(filter_attrMap.values()).forEach((element) => {
+      let opvalue = "opvalue~" + element.name;
+      if (element.fields.get("field-value-ref-id") != undefined) {
+        opvalue =
+          element.fields.get("field-value-ref-id").fieldValue +
+          "~" +
+          element.name;
+      }
       // if(!ignoreListarry.includes(element.name)){
       let op = new Option(
         element.name.toUpperCase().split("_").join(" "),
-        element.name
+        opvalue
       );
       fieldattrselect.add(op);
       if (firstattr === undefined) {
@@ -307,7 +317,7 @@ export class TableFilter extends HTMLElement {
     let filedattrconditon = arown.querySelector('[name="condition"]');
 
     this.addFilterCondtionOptions(
-      filter_attrMap.get(event.target.value),
+      filter_attrMap.get(event.target.value.split("~")[1]),
       filedattrconditon
     );
   };

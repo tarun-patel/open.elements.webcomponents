@@ -70,7 +70,8 @@ const getformElement = (
   element, //element.getfieldvaluerefid
   elementEventListners,
   selectValuesMapper,
-  dataFunctions
+  dataFunctions,
+  cellsOnfieldId
 ) => {
   //console.log('control inside the getFormElement')
   //console.log('element event Listner insie the getFormElement',elementEventListners)
@@ -583,6 +584,10 @@ const getTableCellElement = (formElement, field, selectValuesMapper) => {
   if (fdname != undefined) cell.setAttribute("field-name", fdname.fieldValue);
   else cell.setAttribute("field-name", field.name);
   cell.setAttribute("field-id", field.id);
+  cell.setAttribute(
+    "field-value-ref-id",
+    field.fields?.get("field-value-ref-id")?.fieldValue
+  );
   cell.appendChild(formElement);
   return cell;
 };
@@ -593,11 +598,12 @@ const getAddDataRow = (
   ele,
   collection,
   dataFunctions,
-  configServices
+  configServices,
+  cellsOnfieldId
 ) => {
   //console.log('data function inside getAddDataRow', dataFunctions)
   // console.debug("call in adddatarow: ele is:",ele);
-  let drow = getRow(secc, relEles, ele, null, dataFunctions);
+  let drow = getRow(secc, relEles, ele, null, dataFunctions, cellsOnfieldId);
   const actionbcell = document.createElement("td");
   //  let prntid;
   //  if(ele!=undefined && ele.fields!=undfined?.getData("parentId")?.fieldValue)
@@ -609,7 +615,8 @@ const getAddDataRow = (
         collection,
         ele?.fields?.get("parentId")?.fieldValue,
         dataFunctions,
-        configServices
+        configServices,
+        cellsOnfieldId
       )
     )
   );
@@ -727,17 +734,33 @@ const getUpdataRow = (
   ele,
   collection,
   selectValuesMapper,
-  dataFunctions
+  dataFunctions,
+  cellsOnfieldId,
+  basemd
 ) => {
   console.log("ele  inside getUpdateRow", ele);
   console.log("relEles  inside getUpdateRow", relEles);
   // handler
 
-  let drow = getRow(secc, relEles, ele, selectValuesMapper, dataFunctions);
+  let drow = getRow(
+  secc, 
+  relEles, 
+  ele, 
+  selectValuesMapper, 
+  dataFunctions,
+    cellsOnfieldId
+  );
   const actionbcell = document.createElement("td");
   actionbcell.appendChild(
     getButton("publish", "Publish Updates", ele.getId(), "click", (event) =>
-      handleItemUpdate(secc, event, ele, collection, dataFunctions)
+      handleItemUpdate(
+      secc, 
+      event, 
+      ele, 
+      collection, 
+      dataFunctions,
+        cellsOnfieldId
+      )
     )
   );
   actionbcell.appendChild(
@@ -763,7 +786,8 @@ const getReadonlyRow = (
   header,
   ele,
   collection,
-  dataFunctions
+  dataFunctions,
+  cellsOnfieldId
 ) => {
   const actionbcell = document.createElement("td");
   // actionbcell.appendChild(getButton("publish","Publish Updates", ele.getId(), "click", (event) => handleItemUpdate(event, ele,collection)));
@@ -826,7 +850,8 @@ const getReadonlyRow = (
     actionbcell,
     header,
     ele,
-    dataFunctions
+    dataFunctions,
+    cellsOnfieldId
   );
   if (ele.fields != undefined && ele.fields.get("status") != undefined) {
     drow.setAttribute("data-status", ele.fields.get("status").fieldValue);
@@ -840,7 +865,8 @@ const getRoRow = (
   actionbcell,
   relEles,
   ele,
-  dataFunctions
+  dataFunctions,
+  cellsOnfieldId
 ) => {
   let mi = new Item();
   mi = metadataItem;
@@ -880,6 +906,11 @@ const getRoRow = (
         // field = fields.get(element.id ); // revert this after exports test:
         field = fields.get(fname); // revert this after exports test:
 
+        if (cellsOnfieldId) {
+          field = fields.get(
+            element.fields.get("field-value-ref-id").fieldValue
+          );
+        }
         // field = fields.get(fname ); // revert this after exports test:
       }
       // console.debug("fname for field is:");
@@ -914,6 +945,9 @@ const getRoRow = (
       if (flags != undefined && flags.includes("disabled")) {
         formEle.disabled = true; //defauliting to disabled since call is in RO rows
       }
+      if (flags?.includes("serdei")) {
+        formEle.setAttribute("serdei", true); //defauliting to disabled since call is in   rows to non-ser fields
+      } 
       drow.appendChild(getTableCellElement(formEle, element));
     });
   if (
@@ -925,7 +959,14 @@ const getRoRow = (
 
   return drow;
 };
-const getRow = (secc, relEles, ele, selectValuesMapper, dataFunctions) => {
+const getRow = (
+secc,
+ relEles, 
+ ele, 
+ selectValuesMapper, 
+  dataFunctions,
+  cellsOnfieldId
+ ) => {
   // relEless
   //ele == database item to work on
   //console.log('data function inside the getRow and passsing to formElem2',dataFunctions)
@@ -956,6 +997,11 @@ const getRow = (secc, relEles, ele, selectValuesMapper, dataFunctions) => {
       if (fields != undefined) {
         // field = fields.get(element.id ); // revert this after exports test:
         field = fields.get(fname); // revert this after exports test:
+        if (cellsOnfieldId) {
+          field = fields.get(
+            element.fields.get("field-value-ref-id").fieldValue
+          );
+        }
       }
       // console.debug("fname for field fname is:", fname);
       //  console.debug(fname);
@@ -980,7 +1026,8 @@ const getRow = (secc, relEles, ele, selectValuesMapper, dataFunctions) => {
         element,
         feehr.getHandlers(hanlderkey),
         selectValuesMapper,
-        dataFunctions
+        dataFunctions,
+        cellsOnfieldId
       );
       if (defaultvalue != undefined) {
         formEle.setAttribute("value", defaultvalue);
@@ -989,6 +1036,10 @@ const getRow = (secc, relEles, ele, selectValuesMapper, dataFunctions) => {
       if (flags != undefined && flags.includes("disabled")) {
         formEle.disabled = true;
       }
+      if (flags?.includes("serdei")) {
+        formEle.setAttribute("serdei", true); //defauliting to disabled since call is in   rows to non-ser fields
+        // formEle.serdei = true;
+      } 
       drow.appendChild(
         getTableCellElement(formEle, element, selectValuesMapper) //element.id
       );
