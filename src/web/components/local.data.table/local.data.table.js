@@ -9,6 +9,7 @@ import {
   getFilterDataRow,
   getReadonlyRow,
   getUpdataRow,
+  processTableWithHeader,
   processTableWithSearchableHeader,
 } from "../util/elements.builder.util.js";
 import { PageLoader } from "../page-loader/page-loader";
@@ -66,7 +67,7 @@ export class LocalDataTable extends HTMLElement {
       }
 
       headrfunc(headereventcontxt).then((header) => {
-        console.log("heaer data in localdaatatabl header datais:", header);
+        //      console.log("heaer data in localdaatatabl header datais:", header);
         if (header) {
           tbl = processTableWithSearchableHeader(this.metadataItem, header);
           this.metadataItem.addRelElementsOnType("header", "header", header);
@@ -236,7 +237,8 @@ export class LocalDataTable extends HTMLElement {
           addEle,
           this.metadataItem.fields.get("table_data_collection").fieldValue,
           this.services,
-          this.configServices
+          this.configServices,
+          this.metadataItem.getData("cells_on_field_id")?.fieldValue
         );
         tblBody.appendChild(addrow);
       }
@@ -255,7 +257,9 @@ export class LocalDataTable extends HTMLElement {
             ele,
             this.metadataItem.fields.get("table_data_collection").fieldValue,
             this.metadataItem.getData("select_values_mapper").fieldValue,
-            this.services
+            this.services,
+            this.metadataItem.getData("cells_on_field_id")?.fieldValue,
+            this.metadataItem
           );
           if (
             this.metadataItem.fields.get("set_parent_attribute_from_element")
@@ -275,7 +279,8 @@ export class LocalDataTable extends HTMLElement {
             header,
             ele,
             this.metadataItem.fields.get("table_data_collection").fieldValue,
-            this.services
+            this.services,
+            this.metadataItem.getData("cells_on_field_id")?.fieldValue
           );
         }
         tblBody.appendChild(drow);
@@ -308,14 +313,14 @@ export class LocalDataTable extends HTMLElement {
     }
 
     let skeleton_table = this.shadowRoot.querySelector(".skeleton-container");
-    console.log("skeleton-container in localdatatable is", skeleton_table);
+    // console.log("skeleton-container in localdatatable is", skeleton_table);
     if (skeleton_table != null) {
       skeleton_table.classList.add("hide");
     }
     let progressContainer = this.shadowRoot.querySelector(
       ".progress-container"
     );
-    console.log("progress-container in localdatatable is", progressContainer);
+    //   console.log("progress-container in localdatatable is", progressContainer);
 
     if (progressContainer != null) {
       progressContainer.classList.add("hide");

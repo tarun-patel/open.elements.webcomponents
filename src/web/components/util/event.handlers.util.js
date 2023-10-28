@@ -28,7 +28,14 @@ const relaod = () => {
   //  console.log("after location ::: reload:");
 };
 
-const handleItemUpdate = (secc, event, formItem, collection, dataFunctions) => {
+const handleItemUpdate = (
+secc, 
+event,
+formItem, 
+collection, 
+  dataFunctions,
+  cellsOnfieldId
+) => {
   let row = event.target.closest("tr");
   //console.log("handle update : eventtarget is", event.target);
   // console.log("handle update : eventtarget.row is", row);
@@ -41,26 +48,33 @@ const handleItemUpdate = (secc, event, formItem, collection, dataFunctions) => {
       //  console.log("WORKING  ON NODE", node);
       // let fieldname = node.getAttribute("field-id");
       let fieldname = node.getAttribute("field-name");
+      if (cellsOnfieldId) {
+        fieldname = node.getAttribute("field-value-ref-id");
+      }
       let ip = node.childNodes[0];
       // console.log("IPIS:", ip);
       // console.log("IP VLAUE IS:", ip.value);
 
-      let nodevalu = node.childNodes[0].value;
-      if (node.childNodes[0].getAttribute("type") === "checkbox") {
+      let nodevalu = ip.value;
+      if (ip.getAttribute("type") === "checkbox") {
         //  let inputnode =
         //    node.childNodes[0].shadowRoot.querySelectorAll(".switch-checkbox")[0];
-        let inputnode = node.childNodes[0]; //retouch for custom checkbox
+        let inputnode = ip; //retouch for custom checkbox
         // console.log("inputnode is:",inputnode);
         nodevalu = inputnode.checked;
       }
       if (ip.getAttribute("type") === "number") {
-        nodevalu = node.childNodes[0].valueAsNumber;
+        nodevalu = ip.valueAsNumber;
       }
       let itmd = new ItemData();
       itmd.name = fieldname;
       itmd.fieldValue = nodevalu;
       //     console.log("parepared itemdata for formItem:",itmd);
-
+      if (ip.getAttribute("serdei") === "true") {
+        let fmetadata = new Item();
+        fmetadata.addData("serdei", new ItemData("serdei", true));
+        itmd.metaData = fmetadata;
+      }
       formItem.addData(itmd.name, itmd);
       // console.log("handleitemupdate json string of formItem:serde",JSON.stringify(formItem,serd.replacer));
     });
@@ -282,7 +296,8 @@ const handleItemAdd = (
   collection,
   parentId,
   dataFunctions,
-  configServices
+  configServices,
+  cellsOnfieldId
 ) => {
   // const itemservice = new ItemService();
   let formItem = new Item();
@@ -296,25 +311,31 @@ const handleItemAdd = (
   Array.from(row.childNodes)
     .filter((node) => !node.classList.contains("row-action"))
     .forEach((node) => {
-      let fieldname = node.getAttribute("field-name");
       // let fieldId = node.getAttribute("field-id");
-
-      if (node.childNodes[0].getAttribute("type") === "checkbox") {
-        let inputnode = node.childNodes[0]; // retoucch for custom checkbox
+      let firstnode = node.childNodes[0];
+      let fieldname = node.getAttribute("field-name");
+      if (cellsOnfieldId) {
+        fieldname = node.getAttribute("field-value-ref-id");
+      }
+      if (firstnode.getAttribute("type") === "checkbox") {
+        let inputnode = firstnode; // retoucch for custom checkbox
         // console.log("inputnode is:",inputnode);
         formItem.addData(fieldname, new ItemData(fieldname, inputnode.checked));
-      } else if (node.childNodes[0].getAttribute("type") === "number") {
+      } else if (firstnode.getAttribute("type") === "number") {
         formItem.addData(
           fieldname,
-          new ItemData(fieldname, node.childNodes[0].valueAsNumber)
+          new ItemData(fieldname, firstnode.valueAsNumber)
         );
       } else {
-        formItem.addData(
-          fieldname,
-          new ItemData(fieldname, node.childNodes[0].value)
-        );
+        formItem.addData(fieldname, new ItemData(fieldname, firstnode.value));
       }
-      node.childNodes[0].value = "";
+      firstnode.value = "";
+      if (firstnode.getAttribute("serdei") === "true") {
+        let ffd = formItem.fields.get(fieldname);
+        let fmetadata = new Item();
+        fmetadata.addData("serdei", new ItemData("serdei", true));
+        ffd.metaData = fmetadata;
+      }
     });
   let rowParent = row.getAttribute("prnt");
   if (rowParent != undefined) {
@@ -339,7 +360,8 @@ const handleItemAdd = (
       row,
       formItem,
       collection,
-      dataFunctions
+      dataFunctions,
+      cellsOnfieldId
     );
   });
 };
@@ -350,7 +372,8 @@ const handleAddRowPostProccessing = (
   row,
   formItem,
   collection,
-  dataFunctions
+  dataFunctions,
+  cellsOnfieldId
 ) => {
   // console.debug("data on response to add:");
   // console.debug(data);
@@ -368,7 +391,14 @@ const handleAddRowPostProccessing = (
     updateRow.id,
     "click",
     (event) =>
-      handleItemUpdate(secc, event, formItem, collection, dataFunctions)
+      handleItemUpdate(
+      secc, 
+      event, 
+      formItem, 
+      collection, 
+        dataFunctions,
+        cellsOnfieldId
+      )
   );
   // console.debug(updateButton);
   let deleteButton = getButton(
@@ -397,8 +427,11 @@ const handleAddRowPostProccessing = (
     // console.debug("ipdate row sele for updated ele:",sele.name,sele);
     // let  formdaat=formItem.fields.get(sele.fields.get("form_data_name").fieldValue);
     let formdaat = formItem.fields.get(sele.name);
-
-    // console.debug("update row formdaatis:",formdaat);
+    if (cellsOnfieldId) {
+      formdaat = formItem.fields.get(
+        sele.parentNode.getAttribute("field-value-ref-id")
+      );
+    }
     Array.from(sele.options)
       .filter((option) => option.value === formdaat.fieldValue)
       .forEach((op) => {
@@ -411,7 +444,11 @@ const handleAddRowPostProccessing = (
       // console.debug("addrow sele for updated ele:",sele.name,sele);
       // let  formdaat=formItem.fields.get(sele.fields.get("form_data_name").fieldValue);
       let formdaat = formItem.fields.get(sele.name);
-
+      if (cellsOnfieldId) {
+        formdaat = formItem.fields.get(
+          sele.parentNode.getAttribute("field-value-ref-id")
+        );
+      }
       // console.debug("addrow formdaatis:",formdaat);
       Array.from(sele.options)
         .filter((option) => option.value === formdaat.fieldValue)
@@ -451,7 +488,7 @@ const extractFilterData = (tbl) => {
     let fieldfvcn = trchildnodes[2];
     let fieldsvcn = trchildnodes[3];
     //  console.log("fieldfvcn in extract filter data is:",fieldfvcn);
-    fieldAttribute.name = fieldnamecn.firstChild.value;
+    fieldAttribute.name = fieldnamecn.firstChild.value.split("~")[1];
     fieldAttribute.type = fieldcondtioncn.firstChild.value;
     //  console.log("values captured are:fieldnamecn",fieldnamecn.firstChild.value);
     //  console.log("values captured are:fieldcondtioncn",fieldcondtioncn.firstChild.value);
