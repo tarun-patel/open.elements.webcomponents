@@ -1,3 +1,33 @@
+export { SlotElement } from "./web/components/input-custom-elements/slot-element/slot-ele";
+
+export { InputWeekEle } from "./web/components/input-custom-elements/input.week/input.week";
+
+export { InputUrlEle } from "./web/components/input-custom-elements/input.url/input.url";
+
+export { InputTimeEle } from "./web/components/input-custom-elements/input.time/input.time";
+
+export { InputTelEle } from "./web/components/input-custom-elements/input.tel/input.tel";
+
+export { InputSubmitEle } from "./web/components/input-custom-elements/input.submit/input.submit";
+
+export { InputSearchEle } from "./web/components/input-custom-elements/input.search/input.search";
+
+export { InputRadioEle } from "./web/components/input-custom-elements/input.radio/input.radio";
+
+export { InputPasswordEle } from "./web/components/input-custom-elements/input.password/input.password";
+
+export { InputMonthEle } from "./web/components/input-custom-elements/input.month/input.month";
+
+export { InputImageEle } from "./web/components/input-custom-elements/input.image/input.image";
+
+export { InputDateEle } from "./web/components/input-custom-elements/input.date/input.date";
+
+export { InputFileEle } from "./web/components/input-custom-elements/input.file/input.file";
+
+export { InputButtonEle } from "./web/components/input-custom-elements/input.button/input.button";
+
+export { InputTextEle } from "./web/components/input-custom-elements/input.text/input.text";
+
 export { InputCheckBox } from "./web/components/input-checkbox/input-checkbox";
 
 export { MultiSelect } from "./web/components/multi-select/multi.select";

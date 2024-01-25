@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../../Javascript pratice problems/Comment Problem"
+		},
+		{
+			"path": "../../../../../../Javascript pratice problems/Model popup"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Model popup",
+		"liveServer.settings.port": 5501
+	}
+}

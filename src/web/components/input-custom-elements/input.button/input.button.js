@@ -1,0 +1,34 @@
+import { Item } from "open.elements.data.ts";
+export class InputButtonEle extends HTMLElement {
+  metaItem = new Item();
+  constructor() {
+    super();
+    // this.metaItem = item;
+    this.attachShadow({ mode: "open" });
+  }
+  initialize(item) {
+    this.metaItem = item;
+  }
+  connectedCallback() {
+    console.log("meta item rcvd  :", this.metaItem);
+    let fields = this.metaItem.fields;
+    let ele = fields.get("element").fieldValue;
+    let type = fields.get("type").fieldValue;
+    let lbl = fields.get("label")?.fieldValue;
+    let value = fields.get("value")?.fieldValue;
+    if (lbl != undefined) {
+      let lblEle = document.createElement("label");
+      lblEle.textContent = lbl;
+      this.shadowRoot.appendChild(lblEle);
+    }
+
+    let element = document.createElement(ele);
+    element.type = type;
+    
+    if (value != undefined) {
+      element.value = value;
+    }
+    this.shadowRoot.appendChild(element);
+  }
+}
+customElements.define("input-button", InputButtonEle);
