@@ -9,6 +9,7 @@ import {
   getFilterDataRow,
   getReadonlyRow,
   getUpdataRow,
+  processTableWithHeader,
   processTableWithSearchableHeader,
 } from "../util/elements.builder.util.js";
 import { PageLoader } from "../page-loader/page-loader";
@@ -31,17 +32,18 @@ export class LocalDataTable extends HTMLElement {
   }
   connectedCallback() {
     let table_styles = this.metadataItem.fields.get("table-styles")?.fieldValue;
-    let skeletonTableStyles=this.metadataItem.fields.get('skeleton-styles')?.fieldValue;
+    let skeletonTableStyles =
+      this.metadataItem.fields.get("skeleton-styles")?.fieldValue;
     this.shadow.innerHTML = `  <style>${styles}${table_styles}${skeletonTableStyles}</style>${html}`;
 
     let fields = this.metadataItem.fields;
 
-    let ItemServ=this.metadataItem.getRelElementsOnType('SERVICES');
-    this.services=ItemServ.get('data_function_services');
+    let ItemServ = this.metadataItem.getRelElementsOnType("SERVICES");
+    this.services = ItemServ.get("data_function_services");
 
-    let congifServ=this.metadataItem.getRelElementsOnType('CONFIG');
-    this.configServices=congifServ.get('config_data_func');
-   // console.log('data function passing from local table',this.services);
+    let congifServ = this.metadataItem.getRelElementsOnType("CONFIG");
+    this.configServices = congifServ.get("config_data_func");
+    // console.log('data function passing from local table',this.services);
     if (fields.get("table-styles") != undefined) {
       let mainStyles = fields.get("table-styles").fieldValue;
       this.shadow.innerHTML = `  <style>${styles} ${mainStyles}</style>${html}`;
@@ -65,7 +67,7 @@ export class LocalDataTable extends HTMLElement {
       }
 
       headrfunc(headereventcontxt).then((header) => {
-        console.log("heaer data in localdaatatabl header datais:", header);
+        //      console.log("heaer data in localdaatatabl header datais:", header);
         if (header) {
           tbl = processTableWithSearchableHeader(this.metadataItem, header);
           this.metadataItem.addRelElementsOnType("header", "header", header);
@@ -142,7 +144,7 @@ export class LocalDataTable extends HTMLElement {
               "SERVICES",
               "data_function_services",
               this.services
-            ); 
+            );
             filterMenuItem.addRelElementsOnType(
               "FUNCTIONS",
               "table_filter_attr_conditions_function",
@@ -228,14 +230,15 @@ export class LocalDataTable extends HTMLElement {
           )
         );
 
-  //      console.log('function services passing before getAddRow call', this.services);
+        //      console.log('function services passing before getAddRow call', this.services);
         let addrow = getAddDataRow(
           this.metadataItem.getData("secc").fieldValue,
           header,
           addEle,
           this.metadataItem.fields.get("table_data_collection").fieldValue,
           this.services,
-          this.configServices
+          this.configServices,
+          this.metadataItem.getData("cells_on_field_id")?.fieldValue
         );
         tblBody.appendChild(addrow);
       }
@@ -248,23 +251,27 @@ export class LocalDataTable extends HTMLElement {
           this.metadataItem.getData("table_is_editable") != undefined &&
           this.metadataItem.getData("table_is_editable").fieldValue
         ) {
-          //  console.log("this.metadataItem.fields.get(table_is_editable).fieldValue is:",this.metadataItem.fields.get("table_is_editable").fieldValue);
-          // console.log("call under getting update row",this.metadataItem.getData("secc").fieldValue);
-          // console.log("call under update row working on element:",ele);
-          //console.log('function services passing before getUpdateRow call ',this.services)
           drow = getUpdataRow(
             this.metadataItem.getData("secc").fieldValue,
             header,
             ele,
             this.metadataItem.fields.get("table_data_collection").fieldValue,
             this.metadataItem.getData("select_values_mapper").fieldValue,
-            this.services
+            this.services,
+            this.metadataItem.getData("cells_on_field_id")?.fieldValue,
+            this.metadataItem
           );
+          if (
+            this.metadataItem.fields.get("set_parent_attribute_from_element")
+              ?.fieldValue
+          ) {
+            drow.setAttribute("prnt", ele.parentId);
+          }
         } else {
           // console.log("call under getting RO row");
 
           //  console.log("this.metadataItem.fields.get(table_is_editable).fieldValue is:",this.metadataItem.fields.get("table_is_editable").fieldValue);
-         // console.log('function services passing before readOnlyRow call', this.services);
+          // console.log('function services passing before readOnlyRow call', this.services);
 
           drow = getReadonlyRow(
             this.metadataItem.getData("secc").fieldValue,
@@ -272,7 +279,8 @@ export class LocalDataTable extends HTMLElement {
             header,
             ele,
             this.metadataItem.fields.get("table_data_collection").fieldValue,
-            this.services
+            this.services,
+            this.metadataItem.getData("cells_on_field_id")?.fieldValue
           );
         }
         tblBody.appendChild(drow);
@@ -305,14 +313,14 @@ export class LocalDataTable extends HTMLElement {
     }
 
     let skeleton_table = this.shadowRoot.querySelector(".skeleton-container");
-    console.log("skeleton-container in localdatatable is", skeleton_table);
+    // console.log("skeleton-container in localdatatable is", skeleton_table);
     if (skeleton_table != null) {
       skeleton_table.classList.add("hide");
     }
     let progressContainer = this.shadowRoot.querySelector(
       ".progress-container"
     );
-    console.log("progress-container in localdatatable is", progressContainer);
+    //   console.log("progress-container in localdatatable is", progressContainer);
 
     if (progressContainer != null) {
       progressContainer.classList.add("hide");
